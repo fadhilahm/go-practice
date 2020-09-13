@@ -121,31 +121,57 @@
 // 	fmt.Println("5 - 3 =", subResult)
 // }
 
+// package main
+
+// import "fmt"
+
+// func add (a, b int) (c int) {
+// 	c = a + b
+// 	return
+// }
+
+// func substract (a, b int) (c int) {
+// 	c = a - b
+// 	return
+// }
+
+// // CalcFunc is..
+// type CalcFunc func (int, int) int
+
+// func calc(a, b int, f CalcFunc) (r int) {
+// 	r = f(a, b)
+// 	return
+// }
+
+// func main() {
+// 	addResult := calc(5, 3, add)
+// 	subResult := calc(5, 3, substract)
+// 	fmt.Println("5 + 3 =", addResult)
+// 	fmt.Println("5 - 3 =", subResult)
+// }
+
+// --- Function as a value
+// package main
+
+// import "fmt"
+
+// var add = func (a int, b int) int {
+// 	return a + b
+// }
+
+// func main() {
+// 	fmt.Println("5 + 3 =", add(5, 3))
+// }
+
+// --- Immediately invoked function expression (IFE)
 package main
 
 import "fmt"
 
-func add (a, b int) (c int) {
-	c = a + b
-	return
-}
-
-func substract (a, b int) (c int) {
-	c = a - b
-	return
-}
-
-// CalcFunc is..
-type CalcFunc func (int, int) int
-
-func calc(a, b int, f CalcFunc) (r int) {
-	r = f(a, b)
-	return
-}
-
 func main() {
-	addResult := calc(5, 3, add)
-	subResult := calc(5, 3, substract)
-	fmt.Println("5 + 3 =", addResult)
-	fmt.Println("5 - 3 =", subResult)
+	sum := func (a int, b int) int {
+		return a + b
+	}(3, 5)
+
+	fmt.Println("5 + 3 =", sum)
 }
