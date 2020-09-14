@@ -151,48 +151,141 @@ import (
 // --- data type conversion
 
 // Profile declares `Profile` structure
-type Profile struct {
-	Username	string
-	Followers 	int
-}
+// type Profile struct {
+// 	Username	string
+// 	Followers 	int
+// }
 
-// MarshalJSON - implement `Marshaller` interface
-func (p Profile) MarshalJSON() ([]byte, error) {
-	// return JSON value (TODO: handle error gracefully)
-	return []byte(fmt.Sprintf(`{"f_count": "%d"}`, p.Followers)), nil
-}
+// // MarshalJSON - implement `Marshaller` interface
+// func (p Profile) MarshalJSON() ([]byte, error) {
+// 	// return JSON value (TODO: handle error gracefully)
+// 	return []byte(fmt.Sprintf(`{"f_count": "%d"}`, p.Followers)), nil
+// }
 
-// Age declares `Age` type
-type Age int
+// // Age declares `Age` type
+// type Age int
 
-// MarshalText - Implement `TextMarshaler` interface
-func (a Age) MarshalText() ([]byte, error) {
-	// return string value (TODO: handle error gracefully)
-	return []byte(fmt.Sprintf(`{"age": %d}`, int(a))), nil
-}
+// // MarshalText - Implement `TextMarshaler` interface
+// func (a Age) MarshalText() ([]byte, error) {
+// 	// return string value (TODO: handle error gracefully)
+// 	return []byte(fmt.Sprintf(`{"age": %d}`, int(a))), nil
+// }
+
+// // Student declares `Student` structure
+// type Student struct {
+// 	FirstName, lastName		string
+// 	Age						Age
+// 	Profile					Profile
+// }
+
+// func main() {
+	
+// 	// define `john` struct (pointer)
+// 	john := &Student{
+// 		FirstName:	"John",
+// 		lastName:	"Doe",
+// 		Profile:	Profile{
+// 			Username:	"johndoe91",
+// 			Followers:	1975,
+// 		},
+// 	}
+
+// 	// encode `john` as JSON
+// 	johnJSON, err := json.MarshalIndent(john, "", "  ")
+
+// 	// print JSON string
+// 	fmt.Println( string(johnJSON), err)
+// }
+
+// --- using structure tags
+
+// Profile declares `Profile` structure
+// type Profile struct {
+// 	Username 	string 	`json:"uname"`
+// 	Followers	int		`json:"followers,omitempty,string"`
+// }
+
+// // Student declares `Student` structure
+// type Student struct {
+// 	FirstName		string		`json:"fname"` // `fname` as field name
+// 	LastName		string		`json:"lname,omitempty"` // discard if value is empty
+// 	Email			string		`json:"-"` // always discard
+// 	Age				int			`json:"-,"` // `-` as field name
+// 	IsMale			bool		`json:",string"` // keep original field name, coerce to a string
+// 	Profile			Profile		`json:""` // no effect
+// }
+
+// func main() {
+// 	// define `john` struct (pointer)
+// 	john := &Student{
+// 		FirstName: 	"John",
+// 		LastName:	"", // empty
+// 		Age:		21,
+// 		Email:		"john@doe.com",
+// 		Profile:	Profile{
+// 			Username:	"johndoe91",
+// 			Followers:	1975,
+// 		},
+// 	}
+
+// 	// encode `john` as JSON
+// 	johnJSON, _ := json.MarshalIndent(john, "", "  ")
+
+// 	// print JSON string
+// 	fmt.Println( string (johnJSON))
+// }
+
+// --- decoding JSON
+
+// func main() {
+// 	// some JSON data
+// 	data := []byte(`
+// 	{
+// 		"FirstName": "John",
+// 		"Age": 21,
+// 		"Username": "johndoe91",
+// 		"Grades": null,
+// 		"Languages": [
+// 			"English",
+// 			"French"
+// 		]
+// 	}`)
+
+// 	// check if `data` is a valid JSON
+// 	isValid := json.Valid(data)
+// 	fmt.Println(isValid)
+// }
+
+// --- Unmarshall
 
 // Student declares `Student` structure
-type Student struct {
-	FirstName, lastName		string
-	Age						Age
-	Profile					Profile
-}
+// type Student struct {
+// 	FirstName, lastName		string
+// 	Email					string
+// 	Age						int
+// 	HeightInMeters			float64
+// }
 
-func main() {
-	
-	// define `john` struct (pointer)
-	john := &Student{
-		FirstName:	"John",
-		lastName:	"Doe",
-		Profile:	Profile{
-			Username:	"johndoe91",
-			Followers:	1975,
-		},
-	}
+// func main() {
+// 	// some JSON data
+// 	data := []byte(`
+// 	{
+// 		"FirstName": "John",
+// 		"lastName": "Doe",
+// 		"Age": 21,
+// 		"HeightInMeters": 175,
+// 		"Username": "johndoe91"
+// 	}
+// 	`)
 
-	// encode `john` as JSON
-	johnJSON, err := json.MarshalIndent(john, "", "  ")
+// 	// create a data container
+// 	var john Student
 
-	// print JSON string
-	fmt.Println( string(johnJSON), err)
-}
+// 	// unmarshall `data`
+// 	fmt.Printf(" Error: %v\n", json.Unmarshal(data, &john) );
+
+// 	// print `john` struct
+// 	fmt.Printf("%#v\n", john)
+// }
+
+// --- handling complex data
