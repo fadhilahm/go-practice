@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 	"encoding/json"
-	"bytes"
+	// "bytes"
 )
 
 // Student declares `Student` structure
@@ -617,12 +617,53 @@ import (
 // --- encoder and decoder
 
 // Person declares `Person` structure
+// type Person struct {
+// 	Name 	string
+// 	Age		int
+// }
+
+// func main() {
+// 	// create a buffer to hold JSON data
+// 	buf := new(bytes.Buffer)
+// 	// create JSON encode for `buf`
+// 	bufEncoder := json.NewEncoder(buf)
+
+// 	// encode JSON from `Person` struct
+// 	bufEncoder.Encode(Person{"Ross Geller", 28})
+// 	bufEncoder.Encode(Person{"Monica Geller", 27})
+// 	bufEncoder.Encode(Person{"Jack Geller", 56})
+
+// 	// print contents of the `buf`
+// 	fmt.Println(buf) // calls `buf.String()` method
+// }
+
+// --- decoder
+
+// Person declares `Person` structure
 type Person struct {
-	Name 	string
-	Age		string
+	Name	string
+	Age		int
 }
 
 func main() {
-	// create a buffer to hold JSON data
-	buf := new(bytes.Buffer)
+	// create a strings reader
+	jsonStream := strings.NewReader(`
+	{"Name": "Ross Geller", "Age": 28}
+	{"Name": "Monica Geller", "Age": 27}
+	{"Name": "Jack Geller", "Age": 56}
+	`)
+
+	// create JSON decoder using `jsonStream`
+	decoder := json.NewDecoder(jsonStream)
+
+	// create `Person` struct to hold decoded data
+	var ross, monica Person
+
+	// decode JSON from `decoder` one line at a time
+	decoder.Decode(&ross)
+	decoder.Decode(&monica)
+
+	// see value of the `ross` and `monica`
+	fmt.Printf("ross: %#v\n", ross)
+	fmt.Printf("monica: %#v\n", monica)
 }
